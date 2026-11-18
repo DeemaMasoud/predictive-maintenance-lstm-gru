@@ -1,0 +1,10 @@
+flask
+tensorflow-cpu==2.21.0
+keras==3.14.0
+pandas
+numpy
+scikit-learn
+joblib
+shap==0.54.1
+openpyxl
+gunicorn

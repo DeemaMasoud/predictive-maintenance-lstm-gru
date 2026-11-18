@@ -1,0 +1,578 @@
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    padding: 24px;
+    background: #242424;
+    color: #e5e5e5;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 14px;
+}
+
+.dashboard {
+    max-width: 815px;
+    margin: 0 auto;
+    padding: 14px;
+    background: #2e2e2e;
+    border: 1px solid #484848;
+    border-radius: 17px;
+}
+
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    padding-bottom: 23px;
+    border-bottom: 1px solid #3b3b3b;
+}
+
+.brand {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.logo {
+    width: 36px;
+    height: 36px;
+    background: #080808;
+    border-radius: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 20px;
+    color: white;
+}
+
+h2, h3, h4, p {
+    margin: 0;
+}
+
+.brand h3 {
+    font-size: 16px;
+    font-weight: 600;
+}
+
+.brand p {
+    color: #bcbcbc;
+    margin-top: 5px;
+}
+
+.badge {
+    background: #464646;
+    color: #e0e0e0;
+    padding: 4px 9px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+main {
+    padding-top: 28px;
+}
+
+h2 {
+    font-size: 18px;
+    margin-bottom: 17px;
+}
+
+.description {
+    color: #c3c3c3;
+    margin-bottom: 16px;
+    line-height: 1.5;
+}
+
+.upload-area {
+    border: 1px solid #505050;
+    border-radius: 13px;
+    padding: 14px 20px 17px;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.upload-area svg {
+    margin-bottom: 12px;
+}
+
+.upload-area h3 {
+    font-size: 16px;
+    margin-bottom: 14px;
+}
+
+.upload-area p {
+    color: #bfbfbf;
+}
+
+.file-button {
+    display: inline-block;
+    background: #050505;
+    color: #ffffff;
+    border-radius: 9px;
+    padding: 13px 17px;
+    margin-top: 12px;
+    cursor: pointer;
+    font-weight: 600;
+}
+
+.file-button:hover {
+    background: #171717;
+}
+
+.filename {
+    margin-top: 8px;
+    font-size: 12px;
+    overflow-wrap: anywhere;
+}
+
+.filename:empty {
+    display: none;
+}
+
+.model-info {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    color: #c4c4c4;
+    margin: 12px 0;
+    gap: 10px;
+}
+
+.analyze-button {
+    width: 100%;
+    border: none;
+    padding: 17px;
+    border-radius: 12px;
+    background: #303941;
+    color: #e8e8e8;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.analyze-button:hover {
+    background: #394650;
+}
+
+.results-section {
+    border-top: 1px solid #3b3b3b;
+    margin-top: 22px;
+    padding-top: 23px;
+}
+
+.section-heading {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 17px;
+    gap: 10px;
+}
+
+.section-heading h3 {
+    font-size: 16px;
+}
+
+.results-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 9px;
+}
+
+.result-card {
+    border: 1px solid #505050;
+    border-radius: 12px;
+    padding: 15px 12px;
+}
+
+.result-card p {
+    color: #bfbfbf;
+}
+
+.value {
+    font-size: 27px;
+    font-weight: 700;
+    margin: 6px 0;
+}
+
+.value small {
+    font-size: 13px;
+    font-weight: 400;
+}
+
+.xai-panel {
+    border: 1px solid #505050;
+    border-radius: 12px;
+    margin-top: 12px;
+    padding: 17px 13px 0;
+}
+
+.xai-panel .section-heading {
+    margin-bottom: 0;
+}
+
+.xai-item {
+    display: flex;
+    align-items: center;
+    gap: 13px;
+    padding: 19px 0;
+}
+
+.xai-item + .xai-item {
+    border-top: 1px solid #3e3e3e;
+}
+
+.xai-icon {
+    color: #cacaca;
+    font-size: 22px;
+    width: 23px;
+    text-align: center;
+}
+
+.xai-item h4 {
+    font-size: 14px;
+    margin-bottom: 5px;
+}
+
+.xai-item p {
+    color: #bfbfbf;
+    line-height: 1.4;
+}
+
+.error {
+    background: #492b2b;
+    color: #ffb4b4;
+    border: 1px solid #905050;
+    padding: 12px;
+    margin-top: 15px;
+    border-radius: 9px;
+}
+
+@media (max-width: 550px) {
+    body {
+        padding: 10px;
+    }
+
+    .dashboard {
+        padding: 12px;
+    }
+
+    .results-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .model-info {
+        font-size: 12px;
+    }
+}
+
+.xai-title {
+    margin-top: 22px;
+    margin-bottom: 18px;
+}
+
+.xai-title h4 {
+    font-size: 14px;
+    margin-bottom: 5px;
+}
+
+.xai-title p,
+.heatmap-note {
+    color: #bfbfbf;
+    font-size: 12px;
+    line-height: 1.5;
+}
+
+.shap-chart {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.shap-row {
+    display: grid;
+    grid-template-columns: 40px 1fr 65px;
+    gap: 12px;
+    align-items: center;
+}
+
+.sensor-name,
+.shap-value {
+    color: #d2d2d2;
+    font-size: 12px;
+}
+
+.shap-value {
+    text-align: right;
+    font-variant-numeric: tabular-nums;
+}
+
+.shap-track {
+    height: 12px;
+    background: #3b3b3b;
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+.shap-bar {
+    height: 100%;
+    border-radius: 4px;
+}
+
+.shap-bar.increase {
+    background: #48b5ba;
+}
+
+.shap-bar.decrease {
+    background: #d38973;
+}
+
+.chart-legend {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 18px;
+    margin-top: 16px;
+    font-size: 12px;
+}
+
+.legend-increase {
+    color: #48b5ba;
+}
+
+.legend-decrease {
+    color: #d38973;
+}
+
+.heatmap-title {
+    margin-top: 30px;
+    padding-top: 23px;
+    border-top: 1px solid #434343;
+}
+
+.heatmap-scroll {
+    overflow-x: auto;
+    margin-top: 18px;
+}
+
+.heatmap {
+    min-width: 540px;
+}
+
+.heatmap-row {
+    display: grid;
+    grid-template-columns: 45px repeat(30, minmax(10px, 1fr));
+    gap: 3px;
+    margin-bottom: 4px;
+    align-items: center;
+}
+
+.heatmap-label {
+    font-size: 11px;
+    color: #c6c6c6;
+}
+
+.heatmap-cell {
+    height: 17px;
+    border: 1px solid #505050;
+    border-radius: 2px;
+}
+
+.heatmap-axis {
+    display: flex;
+    justify-content: space-between;
+    margin: 10px 0 0 45px;
+    color: #bfbfbf;
+    font-size: 11px;
+}
+
+.heatmap-note {
+    margin-top: 14px;
+    margin-bottom: 17px;
+}
+
+.xai-empty {
+    padding: 20px 0 8px;
+}
+
+.xai-empty p {
+    font-weight: 600;
+    margin-bottom: 4px;
+}
+
+.xai-empty small {
+    color: #bfbfbf;
+}
+
+.xai-empty hr {
+    border: 0;
+    border-top: 1px solid #434343;
+    margin: 18px 0;
+}
+
+
+.engine-field {
+    display: flex;
+    flex-direction: column;
+    gap: 9px;
+    margin-top: 16px;
+    margin-bottom: 14px;
+}
+
+.engine-field label {
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.engine-field input {
+    width: 100%;
+    padding: 13px;
+    background: #282828;
+    color: #e5e5e5;
+    border: 1px solid #505050;
+    border-radius: 9px;
+    font-family: inherit;
+    font-size: 14px;
+}
+
+.engine-field input:focus {
+    outline: none;
+    border-color: #48b5ba;
+}
+
+.engine-field small {
+    color: #bfbfbf;
+    font-size: 12px;
+}
+.sensor-explanation {
+    margin: 4px 0 18px 52px;
+    padding: 11px 14px;
+    background: #353535;
+    border-left: 2px solid #5b9ca8;
+    border-radius: 5px;
+}
+
+.sensor-explanation p {
+    color: #bfbfbf;
+    font-size: 12px;
+    line-height: 1.6;
+    margin-bottom: 5px;
+}
+
+.sensor-explanation .sensor-title {
+    color: #ededed;
+    font-weight: 600;
+    font-size: 13px;
+}
+
+/* SHAP expandable rows */
+
+.shap-list {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    width: 100%;
+}
+
+.shap-list .sensor-item {
+    display: block;
+    width: 100%;
+    border-radius: 8px;
+}
+
+.shap-list .sensor-summary {
+    display: grid;
+    grid-template-columns: 45px minmax(0, 1fr) 75px 18px;
+    gap: 12px;
+    align-items: center;
+    padding: 9px 8px;
+    cursor: pointer;
+    list-style: none;
+}
+
+.shap-list .sensor-summary::-webkit-details-marker {
+    display: none;
+}
+
+.shap-list .sensor-summary::marker {
+    content: "";
+}
+
+.shap-list .sensor-summary .shap-track {
+    display: block;
+    width: 100%;
+    height: 13px;
+    background: #404040;
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+.shap-list .sensor-summary .shap-bar {
+    display: block;
+    height: 100%;
+    border-radius: 4px;
+}
+
+.shap-list .sensor-summary .shap-bar.increase {
+    background: #48b5ba;
+}
+
+.shap-list .sensor-summary .shap-bar.decrease {
+    background: #d38973;
+}
+
+.shap-list .sensor-summary .sensor-name {
+    font-size: 12px;
+    color: #e5e5e5;
+}
+
+.shap-list .sensor-summary .shap-value {
+    text-align: right;
+    font-size: 12px;
+    color: #dedede;
+}
+
+.shap-list .sensor-arrow {
+    color: #bcbcbc;
+    font-size: 16px;
+}
+
+.shap-list .sensor-item[open] .sensor-arrow {
+    transform: rotate(180deg);
+}
+
+.shap-list .sensor-details {
+    display: block;
+    margin: 4px 8px 12px 60px;
+    padding: 13px 16px;
+    background: #393939;
+    border-left: 2px solid #5b9ca8;
+    border-radius: 6px;
+}
+
+.shap-list .sensor-details h4 {
+    font-size: 13px;
+    color: #eeeeee;
+    margin-bottom: 10px;
+}
+
+.shap-list .sensor-details p {
+    color: #c8c8c8;
+    font-size: 12px;
+    line-height: 1.6;
+    margin-bottom: 7px;
+}
+
+@media (max-width: 550px) {
+    .shap-list .sensor-summary {
+        grid-template-columns: 35px minmax(0, 1fr) 65px 12px;
+        gap: 6px;
+    }
+
+    .shap-list .sensor-details {
+        margin-left: 8px;
+    }
+}

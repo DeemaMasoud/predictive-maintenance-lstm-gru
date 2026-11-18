@@ -1,0 +1,330 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Predictive Maintenance</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+
+<body>
+
+<div class="dashboard">
+
+    <header>
+        <div class="brand">
+            <div class="logo">▧</div>
+            <div>
+                <h3>Predictive Maintenance</h3>
+                <p>Engine health monitoring</p>
+            </div>
+        </div>
+    </header>
+
+    <main>
+
+        <!-- UPLOAD SECTION -->
+
+        <section>
+            <h2>Remaining Useful Life Prediction</h2>
+
+            <p class="description">
+                Upload engine sensor measurements to estimate the remaining operating cycles.
+            </p>
+
+            <form method="POST" enctype="multipart/form-data">
+
+                <div class="upload-area">
+                    <svg width="27" height="27" viewBox="0 0 24 24"
+                         fill="none" stroke="currentColor"
+                         stroke-width="1.8" stroke-linecap="round"
+                         stroke-linejoin="round">
+                        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+                        <path d="M14 2v6h6"/>
+                        <path d="M12 18V11m-3 3 3-3 3 3"/>
+                    </svg>
+
+                    <h3>Upload engine data</h3>
+                    <p>CSV, TXT, or Excel · At least 30 operating cycles</p>
+
+                    <label class="file-button" for="file">
+                        ↥ &nbsp; Choose File
+                    </label>
+
+                    <input type="file"
+                           id="file"
+                           name="file"
+                           accept=".csv,.txt,.xlsx"
+                           required hidden>
+
+                    <p id="filename" class="filename"></p>
+                </div>
+
+                <div class="engine-field">
+                    <label for="engine_id">Engine ID (optional)</label>
+
+                    <input type="number"
+                           id="engine_id"
+                           name="engine_id"
+                           min="1"
+                           step="1"
+                           placeholder="Enter ID for multi-engine datasets">
+
+                    <small>
+                        Required when the uploaded file contains multiple engines.
+                    </small>
+                </div>
+
+                <div class="model-info">
+                    <span>Prediction models: LSTM + GRU</span>
+                    <span class="badge">30 × 17 input</span>
+                </div>
+
+                <button type="submit" class="analyze-button">
+                    ⊙ &nbsp; Analyze Engine
+                </button>
+
+            </form>
+
+            {% if error %}
+            <div class="error">{{ error }}</div>
+            {% endif %}
+
+        </section>
+
+        <!-- PREDICTION RESULTS -->
+
+        <section class="results-section">
+
+            <div class="section-heading">
+                <h3>Prediction Results</h3>
+
+                {% if lstm is defined and gru is defined %}
+                    <span class="badge">Prediction complete</span>
+                {% else %}
+                    <span class="badge">Example preview</span>
+                {% endif %}
+            </div>
+
+            <div class="results-grid">
+
+                <div class="result-card">
+                    <p>LSTM prediction</p>
+
+                    <div class="value">
+                        {% if lstm is defined %}
+                            {{ lstm }}
+                        {% else %}
+                            42.5
+                        {% endif %}
+                        <small>cycles</small>
+                    </div>
+
+                    <p>Estimated remaining life</p>
+                </div>
+
+                <div class="result-card">
+                    <p>GRU prediction</p>
+
+                    <div class="value">
+                        {% if gru is defined %}
+                            {{ gru }}
+                        {% else %}
+                            39.8
+                        {% endif %}
+                        <small>cycles</small>
+                    </div>
+
+                    <p>Estimated remaining life</p>
+                </div>
+
+            </div>
+
+            <!-- EXPLAINABLE AI -->
+
+            <div class="xai-panel">
+
+                <div class="section-heading">
+                    <h3>Explainable AI</h3>
+
+                    <span class="badge">
+                        {% if shap_data and heatmap %}
+                            GRU explanations
+                        {% else %}
+                            Awaiting analysis
+                        {% endif %}
+                    </span>
+                </div>
+
+                {% if xai_error %}
+                <div class="error">
+                    XAI could not be generated: {{ xai_error }}
+                </div>
+                {% endif %}
+
+                <!-- SHAP FEATURE IMPORTANCE -->
+
+                {% if shap_data %}
+
+                <div class="xai-title">
+                    <h4>SHAP Feature Importance</h4>
+                    <p>
+                        Impact of each feature on the predicted GRU remaining useful life
+                    </p>
+                    <p>Select a sensor to view its explanation.</p>
+                </div>
+
+                <div class="shap-list">
+
+                    {% for item in shap_data %}
+
+                    <details class="sensor-item">
+
+                        <summary class="sensor-summary">
+
+                            <span class="sensor-name">
+                                {{ item.name|upper }}
+                            </span>
+
+                            <span class="shap-track">
+                                <span class="shap-bar {{ item.direction }}"
+                                      style="width: {{ item.width }}%;">
+                                </span>
+                            </span>
+
+                            <span class="shap-value">
+                                {{ '%+.3f'|format(item.value) }}
+                            </span>
+
+                            <span class="sensor-arrow">⌄</span>
+
+                        </summary>
+
+                        <div class="sensor-details">
+
+                            <h4>
+                                {{ item.name|upper }} —
+                                {{ item.label|default(item.name) }}
+                            </h4>
+
+                            {% if item.trend is defined %}
+                            <p>{{ item.trend }}</p>
+                            {% endif %}
+
+                            {% if item.explanation is defined %}
+                            <p>{{ item.explanation }}</p>
+                            {% endif %}
+
+                        </div>
+
+                    </details>
+
+                    {% endfor %}
+
+                </div>
+
+                <div class="chart-legend">
+                    <span class="legend-increase">
+                        ■ Increases RUL
+                    </span>
+
+                    <span class="legend-decrease">
+                        ■ Decreases RUL
+                    </span>
+                </div>
+
+                {% endif %}
+
+                <!-- INTEGRATED GRADIENTS -->
+
+                {% if heatmap %}
+
+                <div class="xai-title heatmap-title">
+                    <h4>Integrated Gradients</h4>
+
+                    <p>
+                        Attribution strength across 30 operating cycles
+                    </p>
+                </div>
+
+                <div class="heatmap-scroll">
+                    <div class="heatmap">
+
+                        {% for row in heatmap %}
+
+                        <div class="heatmap-row">
+
+                            <span class="heatmap-label"
+                                  title="{{ sensor_names[row.name] if sensor_names is defined else row.name }}">
+                                {{ row.name }}
+                            </span>
+
+                            {% for cell in row.cells %}
+
+                            <div class="heatmap-cell"
+                                 style="background: rgba(66, 171, 199, {{ cell.strength }});"
+                                 title="{{ row.name }} | Cycle {{ cell.cycle }} | Magnitude {{ cell.value }}">
+                            </div>
+
+                            {% endfor %}
+
+                        </div>
+
+                        {% endfor %}
+
+                        <div class="heatmap-axis">
+                            <span>Cycle 1</span>
+                            <span>Cycle 15</span>
+                            <span>Cycle 30</span>
+                        </div>
+
+                    </div>
+                </div>
+
+                <p class="heatmap-note">
+                    Darker cells indicate stronger absolute attribution.
+                    Colors do not indicate positive or negative contributions.
+                </p>
+
+                {% endif %}
+
+                <!-- EMPTY XAI STATE -->
+
+                {% if not shap_data and not heatmap and not xai_error %}
+
+                <div class="xai-empty">
+
+                    <p>SHAP Feature Importance</p>
+                    <small>Which sensors influenced the prediction?</small>
+
+                    <hr>
+
+                    <p>Integrated Gradients</p>
+                    <small>Which operating cycles influenced the prediction?</small>
+
+                </div>
+
+                {% endif %}
+
+            </div>
+
+        </section>
+
+    </main>
+
+</div>
+
+<script>
+    const fileInput = document.getElementById("file");
+    const filename = document.getElementById("filename");
+
+    fileInput.addEventListener("change", function () {
+        filename.textContent = this.files.length
+            ? this.files[0].name
+            : "";
+    });
+</script>
+
+</body>
+</html>
